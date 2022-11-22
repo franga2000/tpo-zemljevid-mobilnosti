@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
+    charset="utf-8"></script>
+
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .map {
+      flex: 1;
+    }
+  </style>
+
+  <title>Zemljevid mobilnosti</title>
+</head>
+
+<body>
+  <header>
+    <!-- <div id="provider-toggles">
+				
+			</div> -->
+  </header>
+  <div id="map" class="map"></div>
+  <script src="main.js"></script>
+
+</body>
+
+</html>
