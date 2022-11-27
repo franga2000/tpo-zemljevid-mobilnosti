@@ -1,0 +1,81 @@
+body {
+    --c-bg-primary: white;
+    --c-bg-secondary: #FAFAFA;
+    --c-bg-secondary-active: #FFF;
+    --c-fg-primary: black;
+    --c-fg-secondary: #333;
+    --c-border-secondary: #CCC;
+    --c-fg-green: #191;
+    --c-fg-grey: #999;
+}
+
+body.dark {
+    --c-bg-primary: black;
+    --c-bg-secondary: #222;
+    --c-bg-secondary-active: #333;
+    --c-fg-primary: white;
+    --c-fg-secondary: #EEE;
+    --c-border-secondary: #555;
+    --c-fg-green: #AFA;
+    --c-fg-grey: #CCC;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.map {
+    flex: 1;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    display: none;
+}
+
+.leaflet-popup-content {
+    margin: 6px;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 2px;
+}
+
+.leaflet-control-layers-list img {
+    height: 2rem;
+    margin-right: .5rem;
+}
+
+.leaflet-control-layers-overlays label > span {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.layer-control {
+    display: inline-flex;
+    align-items: center;
+}
+
+.leaflet-control-layers-selector {
+    display: none;
+}
+
+.leaflet-control-layers-selector:not(:checked) + span {
+    opacity: .5;
+}
+
+
+/*
+    DARK THEME
+*/
+.dark .leaflet-container .leaflet-marker-pane img {
+    filter: brightness(.8);
+}
