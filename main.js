@@ -87,13 +87,36 @@ for (let provider of Object.values(PROVIDERS)) {
         pointToLayer: function (feature, latlng) {
           let item = feature.properties;
 
+          let header = ``;
+          if (item.capacity !== undefined)
+            header += html`
+          <div class='marker-header'>
+            <span class='station-there'>${item.capacity - item.capacity_free}</span> : <span
+              class='station-free'>${item.capacity_free}</span>
+          </div>`;
+
+          /*
           var smallIcon = new L.Icon({
               iconSize: [27, 27],
               iconAnchor: [13, 27],
               popupAnchor:  [1, -24],
               iconUrl: 'assets/marker/' + provider.id + '.png',
             
-          });        
+          }); */
+
+          let smallIcon = new L.DivIcon({
+            className: 'marker',
+            html: header + html`<img src="assets/marker/${provider.id}.png">`
+          })
+
+          let infoBox = html`
+            <strong>${item.title}</strong>
+          `;
+          if (item.type.includes("station")) {
+            infoBox += html`<br>
+            <strong>Prosto:</strong> ${item.capacity_free} <strong>Vozila:</strong> ${item.capacity - item.capacity_free}`
+            }
+          marker.bindPopup(infoBox);
 
           let marker = L.marker(latlng, { icon: smallIcon });
 
