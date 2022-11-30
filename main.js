@@ -33,7 +33,16 @@ let PROVIDERS = {
     endpoint: "/jcdecaux/maribor/stations",
     name: "MBajk",
   },
-
+  sharengo: {
+    id: "sharengo",
+    endpoint: "/sharengo/cars",
+    name: "Share'N Go",
+  },
+  avant2go: {
+    id: "avant2go",
+    endpoint: "/avant2go/stations",
+    name: "Avant2Go",
+  },
 };
 let API_BASE = "https://api.modra.ninja";
 
