@@ -1,0 +1,23 @@
+{
+    "theme_color": "#165490",
+    "background_color": "#ffffff",
+    "description": "Zemljevid mobilnosti",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "assets/ic_trans.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }, {
+        "src": "assets/ic_maskable.png",
+        "sizes": "512x612",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ],
+    "name": "Zemljevid mobilnosti",
+    "short_name": "Zemljevid mobilnosti",
+    "start_url": "/zemljevid/",
+    "scope": "/zemljevid/"
+  }
+  
