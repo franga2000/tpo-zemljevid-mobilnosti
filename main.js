@@ -76,6 +76,29 @@ layerControl.addBaseLayer(CartoDB_DarkMatter, "Temno");
 
 
 
+function darkMode(dark) {
+  if (dark) {
+    document.body.classList.add("dark");
+    CartoDB_DarkMatter.addTo(map);
+    document.querySelectorAll('.leaflet-control-layers-expanded label')[1].click();
+  } else {
+    document.body.classList.remove("dark");
+    CartoDB_VoyagerLabelsUnder.addTo(map);
+    document.querySelectorAll('.leaflet-control-layers-expanded label')[0].click();
+  }
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  darkMode(e.matches);
+});
+darkMode(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+
+map.on('baselayerchange', e => {
+  console.debug(e)
+  darkMode(e.name == 'Temno')
+});
+
 
 for (let provider of Object.values(PROVIDERS)) {
 
