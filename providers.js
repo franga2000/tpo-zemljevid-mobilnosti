@@ -57,31 +57,67 @@ for (let provider of Object.values(PROVIDERS)) {
 
         console.info("Loaded " + provider.id)
 
-        map.addSource('provider_' + provider.id, { type: 'geojson', data: geojsonObject });
-+
-        document.querySelectorAll('[data-provider-group]')[0].classList.add("active")
+        //map.addSource('provider_' + provider.id, { type: 'geojson', data: geojsonObject });
 
-        // add markers to map
-        geojsonObject.features.forEach(function (feature) {
-          let item = feature.properties;
+        map.addLayer({
+          'id': 'provider_' + provider.id,
+          'type': 'symbol',
+          'source': { type: 'geojson', data: geojsonObject },
+          "cluster": true,
 
-          let header = ``;
-          if (item.capacity !== undefined)
-            header += html`
-            <div class='marker-header'>
-              <span class='station-there'>${item.capacity - item.capacity_free}</span> : <span
-                class='station-free'>${item.capacity_free}</span>
-            </div>`;
+          'layout': {
+            'icon-image': provider.id,
+            'icon-size': .4,
+            'icon-allow-overlap': true,
+            'text-allow-overlap': true,
+            "text-size": 10,
+            "text-field": ["format",
+              ["get", "capacity_free"], { "text-color": "green" },
+              " : ", {"text-color": "gray"},
+              ["get", "capacity"], { "text-color": "red" }
+            ],
+          },
 
-          // create a DOM element for the marker
-          var el = document.createElement('span');
-          el.innerHTML = header + html`<img src="assets/marker/optimized/${provider.id}.png">`;
-
-          // add marker to map
-          new maplibregl.Marker(el)
-            .setLngLat(feature.geometry.coordinates)
-            .addTo(map);
+          'paint': {
+            "text-translate": [0, -19],
+          }
         });
+
+        map.on('click', 'places', (e) => {
+          // Copy coordinates array.
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const description = e.features[0].properties.description;
+           
+           
+          new mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map);
+          });
+
+        // document.querySelectorAll('[data-provider-group]')[0].classList.add("active")
+
+        // // add markers to map
+        // geojsonObject.features.forEach(function (feature) {
+        //   let item = feature.properties;
+
+        //   let header = ``;
+        //   if (item.capacity !== undefined)
+        //     header += html`
+        //     <div class='marker-header'>
+        //       <span class='station-there'>${item.capacity - item.capacity_free}</span> : <span
+        //         class='station-free'>${item.capacity_free}</span>
+        //     </div>`;
+
+        //   // create a DOM element for the marker
+        //   var el = document.createElement('span');
+        //   el.innerHTML = header + html`<img src="assets/marker/optimized/${provider.id}.png">`;
+
+        //   // add marker to map
+        //   // new maplibregl.Marker(el)
+        //   //   .setLngLat(feature.geometry.coordinates)
+        //   //   .addTo(map);
+        // });
 
 
       }
