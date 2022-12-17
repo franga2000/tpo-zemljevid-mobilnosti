@@ -23,11 +23,19 @@ var popup = new maplibregl.Popup({
 	closeOnClick: false
 });
 
-for (let provider in PROVIDERS) {
-	map.loadImage(`assets/marker/optimized/${provider}.webp`, function (error, image) {
-		if (error) throw error;
-		if (!map.hasImage(provider)) map.addImage(provider, image);
-	});
+let TRIED_IMAGES = [];
+
+for (let provider_id in PROVIDERS) {
+	let provider = PROVIDERS[provider_id];
+	for (let img of provider.getImages()) {
+		let url = `assets/marker/optimized/${img}.webp`;
+		TRIED_IMAGES.push(url);
+		map.loadImage(url, function (error, image) {
+			if (error) console.error("Error loading image", url, error)
+			else if (!map.hasImage(img)) map.addImage(img, image);
+		});
+	}
+
 }
 
 map.addControl(new maplibregl.GeolocateControl({
@@ -38,9 +46,19 @@ map.addControl(new maplibregl.GeolocateControl({
 }));
 
 map.on('load', function () {
+	loadErrorImage("error_image");
+
+	// Hide data from the base map that we're displaying in other layers
+	if (map.getLayer("poi_z14"))
+		map.setFilter("poi_z14", [
+			"all",
+			["==", "$type", "Point"],
+			["!=", "class", "bus"],
+			["!=", "class", "railway"],
+		])
 
 	// Start loading provider asynchronously
-	load_all()
+	load_all().then(console.debug)
 
 	//
 	// 3D buildings
@@ -56,44 +74,6 @@ map.on('load', function () {
 			break;
 		}
 	}
-
-
-	map.addLayer(
-		{
-			'id': '3d-buildings',
-			'source': 'openmaptiles',
-			'source-layer': 'building',
-			'filter': ['==', 'extrude', 'true'],
-			'type': 'fill-extrusion',
-			'minzoom': 15,
-			'paint': {
-				'fill-extrusion-color': '#aaa',
-
-				// use an 'interpolate' expression to add a smooth transition effect to the
-				// buildings as the user zooms in
-				'fill-extrusion-height': [
-					'interpolate',
-					['linear'],
-					['zoom'],
-					15,
-					0,
-					15.05,
-					['get', 'height']
-				],
-				'fill-extrusion-base': [
-					'interpolate',
-					['linear'],
-					['zoom'],
-					15,
-					0,
-					15.05,
-					['get', 'min_height']
-				],
-				'fill-extrusion-opacity': 0.6
-			}
-		},
-		labelLayerId
-	);
 
 	//
 	// Route line layer
@@ -117,7 +97,7 @@ map.on('load', function () {
 		"type": "line",
 		"source": 'lines',
 		"paint": {
-			"line-color": "#F88",
+			"line-color": ['get', 'color'],
 			"line-width": 8
 		}
 	});
@@ -133,7 +113,8 @@ map.on('load', function () {
 			},
 			"paint": {
 				"line-color": "#888",
-				"line-width": 8
+				"line-width": 6,
+				// "line-opacity": 0.5,
 			}
 		});
 
@@ -155,8 +136,8 @@ map.on('load', function () {
 		function animate(timestamp) {
 			if (start === undefined)
 				start = timestamp;
-			
-			step = (timestamp - start)/25;
+
+			step = (timestamp - start) / 25;
 			//step = step + 1;
 			if (step >= steps) start = timestamp;
 
@@ -186,13 +167,15 @@ map.on('load', function () {
 
 }); // end: load
 
-map.on('styleimagemissing', (e) => {
+
+function loadErrorImage(id) {
+	if (map.hasImage(id)) return;
 	const rgb = [255, 100, 100];
-	 
-	const width = 64; // The image will be 64 pixels square.
+
+	const width = 42; // The image will be 64 pixels square.
 	const bytesPerPixel = 4; // Each pixel is represented by 4 bytes: red, green, blue, and alpha.
 	const data = new Uint8Array(width * width * bytesPerPixel);
-	 
+
 	for (let x = 0; x < width; x++) {
 		for (let y = 0; y < width; y++) {
 			const offset = (y * width + x) * bytesPerPixel;
@@ -202,7 +185,7 @@ map.on('styleimagemissing', (e) => {
 			data[offset + 3] = 255; // alpha
 		}
 	}
-	 
-	map.addImage(e.id, { width: width, height: width, data: data });
-});
+
+	map.addImage(id, { width: width, height: width, data: data });
+}
 
