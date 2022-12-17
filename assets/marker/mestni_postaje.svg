@@ -3,17 +3,16 @@
    viewBox="0 0 511.99899 511.99899"
    version="1.1"
    id="svg5735"
-   sodipodi:docname="lpp_postaje.svg"
+   sodipodi:docname="nomago_postaje.svg"
    width="511.99899"
    height="511.99899"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14, custom)"
+   xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs5739" />
-  <sodipodi:namedview
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs5739" /><sodipodi:namedview
      id="namedview5737"
      pagecolor="#505050"
      bordercolor="#ffffff"
@@ -24,23 +23,20 @@
      inkscape:deskcolor="#505050"
      showgrid="false"
      inkscape:zoom="1.0764455"
-     inkscape:cx="278.69502"
-     inkscape:cy="277.76604"
+     inkscape:cx="280.08849"
+     inkscape:cy="278.69502"
      inkscape:window-width="1920"
      inkscape:window-height="1051"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg5735" />
-  <rect
-     style="fill:#1e7b4b;fill-opacity:1;stroke-width:1.333;stop-color:#000000"
+     inkscape:current-layer="svg5735" /><rect
+     style="fill:#004899;fill-opacity:1;stroke-width:1.333;stop-color:#000000"
      id="rect340"
      width="511.99899"
      height="511.99899"
      x="0"
-     y="0" />
-  <path
+     y="0" /><path
      d="m 79.998999,351.99899 c 0,19.198 13.864,24.531 26.667001,36.271 v 38.396 c 0,11.729 9.599,21.334 21.333,21.334 h 21.333 c 11.734,0 21.334,-9.604 21.334,-21.334 v -21.333 h 170.666 v 21.333 c 0,11.729 9.604,21.334 21.334,21.334 h 21.333 c 11.729,0 21.333,-9.604 21.333,-21.334 v -38.396 c 12.803,-11.74 26.667,-18.135 26.667,-36.271 v -203.666 c 0,-74.666992 -82.136,-84.333992 -176,-84.333992 -93.864,0 -176.000001,9.667 -176.000001,84.333992 z m 80.000001,15.989 c -18.136,0 -32,-13.864 -32,-32 0,-18.135 13.864,-32 32,-32 18.136,0 32,13.865 32,32 0,18.136 -13.864,32 -32,32 z m 192,0 c -18.136,0 -32,-13.864 -32,-32 0,-18.135 13.864,-32 32,-32 18.136,0 32,13.865 32,32 0,18.136 -13.864,32 -32,32 z m 32,-122.656 h -256 v -106.666 h 256 z"
      id="path5733"
-     style="fill:#ffffff" />
-</svg>
+     style="fill:#ffffff" /></svg>

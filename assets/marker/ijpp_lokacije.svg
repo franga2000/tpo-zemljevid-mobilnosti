@@ -8,7 +8,7 @@
    y="0px"
    viewBox="0 0 748.98515 760.65874"
    xml:space="preserve"
-   sodipodi:docname="lpp_lokacije.svg"
+   sodipodi:docname="ijpp_lokacije.svg"
    width="748.98517"
    height="760.65875"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14, custom)"
@@ -26,9 +26,9 @@
    inkscape:pagecheckerboard="1"
    inkscape:deskcolor="#505050"
    showgrid="false"
-   inkscape:zoom="0.7375186"
-   inkscape:cx="201.35085"
-   inkscape:cy="444.73455"
+   inkscape:zoom="0.5215044"
+   inkscape:cx="459.24828"
+   inkscape:cy="278.04176"
    inkscape:window-width="1920"
    inkscape:window-height="1051"
    inkscape:window-x="0"
@@ -36,9 +36,9 @@
    inkscape:window-maximized="1"
    inkscape:current-layer="Capa_1" />
 <path
-   d="M 374.49649,1.0834555e-7 C 362.50944,1.0834555e-7 351.74139,3.3891701 347.59118,8.4937701 L 179.73647,214.17902 568.54773,213.36086 401.40023,8.4930601 C 397.24848,3.3905801 386.48197,-6.9989165e-4 374.49649,1.0834555e-7 Z"
+   d="M 374.85924,1.1271097e-7 C 362.45741,1.1271097e-7 351.31677,3.5257249 347.02295,8.8359969 L 173.36018,222.80862 575.62499,221.95749 402.69389,8.8352583 C 398.39847,3.5271917 387.25943,-7.2809133e-4 374.85924,1.1271097e-7 Z"
    id="path2"
-   style="fill:#1e7b4b;fill-opacity:1;stroke-width:1.48571"
+   style="fill:#004e96;fill-opacity:1;stroke-width:1.54133"
    sodipodi:nodetypes="cccccc" />
 <g
    id="g4"
@@ -101,7 +101,7 @@
    transform="translate(296.07705,207.94116)">
 </g>
 <ellipse
-   style="fill:#1e7b4b;fill-opacity:1;stroke-width:1.30607;stop-color:#000000"
+   style="fill:#004e96;fill-opacity:1;stroke-width:1.30607;stop-color:#000000"
    id="path5910"
    cx="374.49258"
    cy="380.32938"
