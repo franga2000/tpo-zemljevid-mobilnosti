@@ -18,27 +18,40 @@
 
     <script src="vendor/maplibre-gl.js"></script>
   </head>
-  <body sidebarjs-content>
-    <header>
-    </header>
+  <body sidebarjs-content style="background-color:#222">
     
     <div id="map" class="map"></div>
 
-    <aside sidebarjs class="sidebar">
-      <div class="toggle">
-        <input type="radio" name="sizeBy" value="weight" id="sizeWeight" checked="checked" />
-        <label for="sizeWeight">SVETLO</label>
-        <input type="radio" name="sizeBy" value="dimensions" id="sizeDimensions" />
-        <label for="sizeDimensions">TEMNO</label>
+    <aside id="navigation-sidebar" class="hidden hiding">
+      <div id="search">
+        <div id="search-fields"></div>
       </div>
-      <section id="providers"></section>
+      <section id="info-panel"></section>
+      <button id="info-panel-collapse-btn" onclick="hideInfoPanel()">^</button>
     </aside>
 
-    <section id="info-panel" class="hidden hiding"></section>
+    <aside sidebarjs class="sidebar">
+      <div class="toggle">
+        <input type="radio" name="theme" id="themeLight" value="light">
+        <label for="themeLight">SVETLO</label>
+        <input type="radio" name="theme" id="themeDark" value="dark">
+        <label for="themeDark">TEMNO</label>
+      </div>
+      <section id="providers"></section>
+      <div class="toggle">
+        <input type="radio" name="rendering" id="renderingWebgl" value="webgl">
+        <label for="renderingWebgl">WebGL</label>
+        <input type="radio" name="rendering" id="renderingRaster" value="raster">
+        <label for="renderingRaster">Raster</label>
+      </div>
+    </aside>
+
+   
 
     <script src="vendor/sidebarjs.min.js"></script>		
 		<script src="util.js"></script>
 		<script src="providers.js"></script>
+		<script src="searchAndNav.js"></script>
     <script src="map.js"></script>
 		<script src="main.js"></script>
     <script>

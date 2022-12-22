@@ -1,13 +1,42 @@
-var map = new maplibregl.Map({
+window.USE_VECTOR = (localStorage.getItem("USE_VECTOR") || "true") == "true";
+
+let opts = {
 	container: 'map',
-	//style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=8tDQz5wMQ3NjP4jqmQSN',
-	style: 'https://api.maptiler.com/maps/streets/style.json?key=8tDQz5wMQ3NjP4jqmQSN',
+	style: 'https://tiles.derp.si/maps/streets/style.json',
 	center: [14.505, 46.051],
 	zoom: 11,
 	minZoom: 6,
 	renderWorldCopies: false,
 	hash: true,
-});
+};
+
+if (!USE_VECTOR) {
+	opts.style = {
+		'glyphs': "https://tiles.derp.si/fonts/{fontstack}/{range}.pbf",
+		'version': 8,
+		'sources': {
+			'raster-tiles': {
+				'type': 'raster',
+				'tiles': [
+					'https://tiles.derp.si/maps/streets/{z}/{x}/{y}@2x.png'
+				],
+				'tileSize': 256,
+				'attribution': '',
+			}
+		},
+		'layers': [
+			{
+				'id': 'simple-tiles',
+				'type': 'raster',
+				'source': 'raster-tiles',
+				'minzoom': 0,
+				'maxzoom': 22
+			}
+		]
+	}
+}
+var map = new maplibregl.Map(opts);
+
 
 var nav = new maplibregl.NavigationControl();
 map.addControl(nav, 'top-right');

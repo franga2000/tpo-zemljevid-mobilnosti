@@ -63,6 +63,9 @@ function infoPanelTemplate(content) {
 	return $_panel;
 }
 
+
+initSearch();
+
 $infoPanel = document.getElementById("info-panel");
 
 $infoPanelBody = document.getElementById("info-panel");
