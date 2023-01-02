@@ -1,3 +1,5 @@
+let LEAFLET = false;
+
 function noop(strings, ...exp) {
   const lastIndex = strings.length - 1;
 
@@ -17,11 +19,52 @@ html = noop;
 
 
 
+let SECTIONS = [
+  {
+    title: "Izposoja koles",
+    icon: "bike",
+    provider_groups: [
+      {
+        name: "europlakat",
+        providers: ["bicikelj", "mbajk"],
+      },
+      {
+        name: "nomago",
+        providers: ["nextbike"],
+      },
+      {
+        name: "ostali",
+        providers: ["krskolesom", "gorenjska", "soboskibiciklin", "posbikes", "micikel"],
+      },
+    ]
+  },
+  {
+    title: "Izposoja avtomobilov",
+    icons: "car",
+    provider_groups: [
+      {
+        name: "avant2go",
+        providers: ["avant2go"]
+      },
+      {
+        name: "sharengo",
+        providers: ["sharengo"]
+      },
+    ]
+  }
+];
+
+
 let PROVIDERS = {
   nomago_bikes: {
     id: "nomago_bikes",
     endpoint: "/nextbike/SI/stations",
     name: "Nomago Bikes",
+  },
+  sharengo: {
+    id: "sharengo",
+    endpoint: "/sharengo/cars",
+    name: "Share'N Go",
   },
   bicikelj: {
     id: "bicikelj",
@@ -33,131 +76,126 @@ let PROVIDERS = {
     endpoint: "/jcdecaux/maribor/stations",
     name: "MBajk",
   },
-  sharengo: {
-    id: "sharengo",
-    endpoint: "/sharengo/cars",
-    name: "Share'N Go",
-  },
   avant2go: {
     id: "avant2go",
     endpoint: "/avant2go/stations",
     name: "Avant2Go",
   },
+  krskolesom: {
+    id: "krskolesom",
+    endpoint: "/scbikes/stations?system=krskolesom",
+    name: "krskolesom",
+  },
+  gorenjska: {
+    id: "gorenjska",
+    endpoint: "/scbikes/stations?system=gorenjska",
+    name: "gorenjska",
+  },
+  soboskibiciklin: {
+    id: "soboskibiciklin",
+    endpoint: "/scbikes/stations?system=soboskibiciklin",
+    name: "soboskibiciklin",
+  },
+  posbikes: {
+    id: "posbikes",
+    endpoint: "/scbikes/stations?system=posbikes",
+    name: "posbikes",
+  },
+  micikel: {
+    id: "micikel",
+    endpoint: "/micikel/stations",
+    name: "micikel",
+  },
 };
 let API_BASE = "https://api.modra.ninja";
 
 if (window.location.href.includes("127.0.0.1")) {
-  API_BASE = "http://127.0.0.1:42066";
+  //API_BASE = "http://127.0.0.1:42066";
 }
 
 $provider_toggles = document.getElementById("provider-toggles");
 
 
 
-var map = L.map('map', {
-  zoomDelta: 0.01,
-  zoomSnap: 0,
-  minZoom: 8,
-  maxBounds: L.latLngBounds(L.latLng(46.928896753962, 13.072134813746672), L.latLng(45.32440935087733, 16.95960338174632)),
-  doubleTouchDragZoom: true
-}).setView([46.051, 14.505], 13);
-
-var layerControl = L.control.layers([], [], {
-  collapsed: false,
-}).addTo(map);
-
-L.control.locate().addTo(map);
-
-
-var CartoDB_VoyagerLabelsUnder = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  subdomains: 'abcd',
-  maxZoom: 20
-});
-layerControl.addBaseLayer(CartoDB_VoyagerLabelsUnder, "Svetlo");
-
-var CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  subdomains: 'abcd',
-  maxZoom: 20
-});
-layerControl.addBaseLayer(CartoDB_DarkMatter, "Temno");
-
+darkMode(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
 
 function darkMode(dark) {
-  if (dark) {
-    document.body.classList.add("dark");
-    CartoDB_DarkMatter.addTo(map);
-    document.querySelectorAll('.leaflet-control-layers-expanded label')[1].click();
-  } else {
-    document.body.classList.remove("dark");
-    CartoDB_VoyagerLabelsUnder.addTo(map);
-    document.querySelectorAll('.leaflet-control-layers-expanded label')[0].click();
+  if (LEAFLET) {
+    if (dark) {
+      document.body.classList.add("dark");
+      CartoDB_DarkMatter.addTo(map);
+      document.querySelectorAll('.leaflet-control-layers-expanded label')[1].click();
+    } else {
+      document.body.classList.remove("dark");
+      CartoDB_VoyagerLabelsUnder.addTo(map);
+      document.querySelectorAll('.leaflet-control-layers-expanded label')[0].click();
+    }
   }
 }
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
   darkMode(e.matches);
 });
-darkMode(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
 
-map.on('baselayerchange', e => {
-  console.debug(e)
-  darkMode(e.name == 'Temno')
-});
 
+function initSidebar() {
+  let $sidebar = document.getElementById("providers");
+  let $_sidebar = "";
 
-for (let provider of Object.values(PROVIDERS)) {
+  for (let section of SECTIONS) {
 
-  fetch(API_BASE + provider.endpoint)
-    .then((r) => r.json())
-    .then((geojsonObject) => {
+    let $_group = "";
+    for (let group of section.provider_groups) {
 
-      provider.layer = new L.GeoJSON(geojsonObject, {
-        pointToLayer: function (feature, latlng) {
-          let item = feature.properties;
+      $_group += `
+      <span class="layer-control" onclick="toggleGroup(this)" data-provider-group='${group.name}'>
+        <img src="assets/marker/${group.name}.png"> ${group.name}
+      </span>
+      `;
+    }
 
-          let header = ``;
-          if (item.capacity !== undefined)
-            header += html`
-          <div class='marker-header'>
-            <span class='station-there'>${item.capacity - item.capacity_free}</span> : <span
-              class='station-free'>${item.capacity_free}</span>
-          </div>`;
+    $_sidebar += $_group;
 
-          /*
-          var smallIcon = new L.Icon({
-              iconSize: [27, 27],
-              iconAnchor: [13, 27],
-              popupAnchor:  [1, -24],
-              iconUrl: 'assets/marker/' + provider.id + '.png',
-            
-          }); */
+  }
 
-          let smallIcon = new L.DivIcon({
-            className: 'marker',
-            html: header + html`<img src="assets/marker/${provider.id}.png">`
-          })
+  $sidebar.innerHTML = $_sidebar;
+}
 
-          let infoBox = html`
-            <strong>${item.title}</strong>
-          `;
-          if (item.type.includes("station")) {
-            infoBox += html`<br>
-            <strong>Prosto:</strong> ${item.capacity_free} <strong>Vozila:</strong> ${item.capacity - item.capacity_free}`
-            }
-          marker.bindPopup(infoBox);
+initSidebar()
 
-          let marker = L.marker(latlng, { icon: smallIcon });
+function toggleGroup(el) {
+  let group_name = el.dataset.providerGroup;
 
-          return marker;
-        },
-      });
+  for (let section of SECTIONS) {
+    for (let provider_group of section.provider_groups) {
+      
+      if (provider_group.name != group_name)
+          continue
 
-      provider.layer.addTo(map);
+      for (let provider of provider_group.providers) {
+        
+        const clickedLayer = 'provider_' + provider;
 
-      layerControl.addOverlay(provider.layer, html`<span class="layer-control"><img src="assets/marker/${provider.id}.png"> ${provider.name}</span>`);
-    });
+        const visibility = map.getLayoutProperty(
+          clickedLayer,
+          'visibility'
+        );
+
+        // Toggle layer visibility by changing the layout object's visibility property.
+        if (visibility === 'visible') {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+          el.classList.remove("active");
+        } else {
+          el.classList.add("active")
+          map.setLayoutProperty(
+            clickedLayer,
+            'visibility',
+            'visible'
+          );
+        }
+      }
+    }
+  }
 }

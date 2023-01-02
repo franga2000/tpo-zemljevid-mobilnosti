@@ -131,6 +131,15 @@ html, body, .leaflet-container {
     border-color: var(--c-border-secondary);
 }
 
+
+.station-there {
+    color: var(--c-fg-green);
+}
+
+.station-free {
+    color: var(--c-fg-grey);
+}
+
 /*
     DARK THEME
 */
